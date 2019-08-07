@@ -62,7 +62,7 @@ public class QuizAnswerAdapter extends RecyclerView.Adapter<QuizAnswerAdapter.Qu
         WritingQuiz writingQuiz = wordMap.get(position);
         Context context = (Context) savedView.getCurrentActivity();
 
-        View.OnClickListener listener = new View.OnClickListener() {
+        final View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 QuizSystem quizSystem = QuizSystem.getInstance();
@@ -73,29 +73,30 @@ public class QuizAnswerAdapter extends RecyclerView.Adapter<QuizAnswerAdapter.Qu
                 int n = wordMap.get(currentPosition).getNumTries();
                 wordMap.get(currentPosition).setNumTries(n + 1);
                 if(quizSystem.isKanjitileClicked()){
+                    KanjiAdapter kanjiAdapter = KanjiAdapter.getInstance();
                     if(quizSystem.getTile().equals(word)){
-                        KanjiAdapter kanjiAdapter = KanjiAdapter.getInstance();
                         kanjiAdapter.notifyChange();
                         notifyAChange();
                         quizSystem.reset();
                         return;
                     }
+                    kanjiAdapter.notifyInccorrectChange(word);
                     quizSystem.setKanjitileClicked(false);
                     quizSystem.setSentenceClicked(false);
                     resetText();
 
                 }else if (quizSystem.isParticletileClicked()){
+                    ParticlesAdapter particlesAdapter = ParticlesAdapter.getInstance();
                     if(quizSystem.getTile().equals(word)){
-                        ParticlesAdapter particlesAdapter = ParticlesAdapter.getInstance();
                         particlesAdapter.notifyChange();
                         notifyAChange();
                         quizSystem.reset();
                         return;
                     }
+                    particlesAdapter.notifyInccorrectChange(word);
                     quizSystem.setParticletileClicked(false);
                     quizSystem.setSentenceClicked(false);
                     resetText();
-
                 }else{
                     view.setBackgroundResource(R.drawable.hightlight_word);
                 }
@@ -178,5 +179,5 @@ public class QuizAnswerAdapter extends RecyclerView.Adapter<QuizAnswerAdapter.Qu
     public void setNumOfCharLeft(int numOfCharLeft) {
         this.numOfCharLeft = numOfCharLeft;
     }
-    
+
 }

@@ -59,7 +59,7 @@ public class JsonParser {
         ArrayList<String> array = new ArrayList<String>();
         array = convertJASONArray(pos_ans);
         ArrayList<Integer> viewList = new ArrayList<>();
-        viewList.add(1); //TODO: Change 1 back to 0
+        viewList.add(0);
         viewList.add(1);
         //MyDb myDb = new MyDb(context);
         for(int i=0; i < questions.length(); i++){

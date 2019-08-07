@@ -67,13 +67,13 @@ public class ParticlesAdapter extends RecyclerView.Adapter<ParticlesAdapter.Part
                 QuizAnswerAdapter quizAnswerAdapter = QuizAnswerAdapter.getInstance();
                 if(quizSystem.isSentenceClicked()){
                     if(quizSystem.getSentence().equals(word)){
-                        notifyChange();
                         quizAnswerAdapter.notifyAChange();
                     }else {
                         quizSystem.setParticletileClicked(false);
                         quizSystem.setSentenceClicked(false);
                         quizAnswerAdapter.resetText();
                     }
+                    notifyChange();
                 }
             }
         });
@@ -114,6 +114,13 @@ public class ParticlesAdapter extends RecyclerView.Adapter<ParticlesAdapter.Part
     public void notifyChange(){
         QuizSystem quizSystem = QuizSystem.getInstance();
         wordTileArrayList.remove(quizSystem.getSelectedPosition());
+        quizSystem.reset();
+        notifyDataSetChanged();
+    }
+
+    public void notifyInccorrectChange(String word){
+        QuizSystem quizSystem = QuizSystem.getInstance();
+        wordTileArrayList.remove(word);
         quizSystem.reset();
         notifyDataSetChanged();
     }

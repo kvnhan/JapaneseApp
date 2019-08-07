@@ -67,13 +67,13 @@ public class KanjiAdapter extends RecyclerView.Adapter<KanjiAdapter.KanjiHolder>
                 QuizAnswerAdapter quizAnswerAdapter = QuizAnswerAdapter.getInstance();
                 if(quizSystem.isSentenceClicked()){
                     if(quizSystem.getSentence().equals(word)) {
-                        notifyChange();
                         quizAnswerAdapter.notifyAChange();
                     }else{
                         quizSystem.setKanjitileClicked(false);
                         quizSystem.setSentenceClicked(false);
                         quizAnswerAdapter.resetText();
                     }
+                    notifyChange();
                 }
             }
         });
@@ -119,6 +119,13 @@ public class KanjiAdapter extends RecyclerView.Adapter<KanjiAdapter.KanjiHolder>
     public void notifyChange(){
         QuizSystem quizSystem = QuizSystem.getInstance();
         wordTileArrayList.remove(quizSystem.getSelectedPosition());
+        quizSystem.reset();
+        notifyDataSetChanged();
+    }
+
+    public void notifyInccorrectChange(String word){
+        QuizSystem quizSystem = QuizSystem.getInstance();
+        wordTileArrayList.remove(word);
         quizSystem.reset();
         notifyDataSetChanged();
     }
