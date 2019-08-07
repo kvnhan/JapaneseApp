@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <TextView
+        android:id="@+id/wordView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:text="@string/word_of_the_day"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/wordTextView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="#000000"
+                android:textSize="28dp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000000" />
+
+            <ImageView
+                android:id="@+id/wordImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider16"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#000000" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/defTextView"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:padding="10dp"
+                android:text="TextView"
+                android:textColor="#000000" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000000" />
+
+            <TextView
+                android:id="@+id/sentenceTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="TextView"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/imagePager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/box_border" />
+</LinearLayout>

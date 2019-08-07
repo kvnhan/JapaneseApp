@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/n5"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:shadowColor="#00888585"
+        android:text="TextView"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/grammarDes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider4"
+        android:padding="10dp"
+        android:shadowColor="#00888585"
+        android:text="TextView"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/quizButton"
+        android:layout_width="70dp"
+        android:layout_height="37dp"
+        android:layout_below="@id/grammarDes"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="false"
+        android:layout_marginRight="14dp"
+        android:layout_marginBottom="5dp"
+        android:text="QUIZ"
+        android:textSize="12sp" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/n5"
+        android:background="#000000" />
+
+</RelativeLayout>
