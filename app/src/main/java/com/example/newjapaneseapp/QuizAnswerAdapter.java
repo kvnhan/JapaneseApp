@@ -1,6 +1,7 @@
 package com.example.newjapaneseapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,29 +62,16 @@ public class QuizAnswerAdapter extends RecyclerView.Adapter<QuizAnswerAdapter.Qu
         WritingQuiz writingQuiz = wordMap.get(position);
         Context context = (Context) savedView.getCurrentActivity();
 
-        if(!writingQuiz.isHasSeen()) {
-            holder.answerHolder.setText("    ");
-        }else{
-            if(wordMap.get(currentPosition).getNumTries() > 1){
-                holder.answerHolder.setBackgroundResource(R.drawable.writing_quiz_wrong_answer);
-            }else if (wordMap.get(currentPosition).getNumTries() == 1){
-                holder.answerHolder.setBackgroundResource(R.drawable.writing_quiz_right_answer);
-            }
-            holder.answerHolder.setText(wTile);
-        }
-
-        holder.answerHolder.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 QuizSystem quizSystem = QuizSystem.getInstance();
-                Context context = (Context) savedView.getCurrentActivity();
                 String word = wordTileArray.get(holder.getAdapterPosition());
                 currentPosition = holder.getAdapterPosition();
                 quizSystem.setSentence(word);
                 quizSystem.setSentenceClicked(true);
                 int n = wordMap.get(currentPosition).getNumTries();
                 wordMap.get(currentPosition).setNumTries(n + 1);
-
                 if(quizSystem.isKanjitileClicked()){
                     if(quizSystem.getTile().equals(word)){
                         KanjiAdapter kanjiAdapter = KanjiAdapter.getInstance();
@@ -94,7 +82,7 @@ public class QuizAnswerAdapter extends RecyclerView.Adapter<QuizAnswerAdapter.Qu
                     }
                     quizSystem.setKanjitileClicked(false);
                     quizSystem.setSentenceClicked(false);
-                    view.setBackgroundResource(R.drawable.writing_quiz_wrong_answer);
+                    resetText();
 
                 }else if (quizSystem.isParticletileClicked()){
                     if(quizSystem.getTile().equals(word)){
@@ -103,15 +91,33 @@ public class QuizAnswerAdapter extends RecyclerView.Adapter<QuizAnswerAdapter.Qu
                         notifyAChange();
                         quizSystem.reset();
                         return;
-
                     }
                     quizSystem.setParticletileClicked(false);
                     quizSystem.setSentenceClicked(false);
-                    view.setBackgroundResource(R.drawable.writing_quiz_wrong_answer);
+                    resetText();
 
+                }else{
+                    view.setBackgroundResource(R.drawable.hightlight_word);
                 }
             }
-        });
+        };
+
+        if(!writingQuiz.isHasSeen()) {
+            holder.answerHolder.setText("    ");
+        }else{
+            if(wordMap.get(currentPosition).getNumTries() > 1){
+                holder.answerHolder.setBackgroundResource(R.drawable.writing_quiz_wrong_answer);
+                holder.answerHolder.setEnabled(false);
+                holder.answerHolder.setTextColor(Color.BLACK);
+            }else if (wordMap.get(currentPosition).getNumTries() == 1){
+                holder.answerHolder.setBackgroundResource(R.drawable.writing_quiz_right_answer);
+                holder.answerHolder.setEnabled(false);
+                holder.answerHolder.setTextColor(Color.BLACK);
+            }
+            holder.answerHolder.setText(wTile);
+        }
+
+        holder.answerHolder.setOnClickListener(listener);
     }
 
     @Override
@@ -159,6 +165,12 @@ public class QuizAnswerAdapter extends RecyclerView.Adapter<QuizAnswerAdapter.Qu
         notifyItemChanged(currentPosition);
     }
 
+    public void resetText(){
+        wordMap.get(currentPosition).setHasSeen(true);
+        wordMap.get(currentPosition).setNumTries(2);
+        numOfCharLeft--;
+        notifyItemChanged(currentPosition);
+    }
     public int getNumOfCharLeft() {
         return numOfCharLeft;
     }
@@ -166,4 +178,5 @@ public class QuizAnswerAdapter extends RecyclerView.Adapter<QuizAnswerAdapter.Qu
     public void setNumOfCharLeft(int numOfCharLeft) {
         this.numOfCharLeft = numOfCharLeft;
     }
+    
 }

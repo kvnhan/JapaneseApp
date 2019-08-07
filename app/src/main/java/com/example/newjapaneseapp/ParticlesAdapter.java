@@ -64,14 +64,15 @@ public class ParticlesAdapter extends RecyclerView.Adapter<ParticlesAdapter.Part
                 quizSystem.setTile(word);
                 quizSystem.setParticletileClicked(true);
                 quizSystem.setKanjitileClicked(false);
+                QuizAnswerAdapter quizAnswerAdapter = QuizAnswerAdapter.getInstance();
                 if(quizSystem.isSentenceClicked()){
                     if(quizSystem.getSentence().equals(word)){
                         notifyChange();
-                        QuizAnswerAdapter quizAnswerAdapter = QuizAnswerAdapter.getInstance();
                         quizAnswerAdapter.notifyAChange();
                     }else {
                         quizSystem.setParticletileClicked(false);
                         quizSystem.setSentenceClicked(false);
+                        quizAnswerAdapter.resetText();
                     }
                 }
             }

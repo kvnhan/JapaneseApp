@@ -64,14 +64,15 @@ public class KanjiAdapter extends RecyclerView.Adapter<KanjiAdapter.KanjiHolder>
                 quizSystem.setSelectedPosition(holder.getAdapterPosition());
                 quizSystem.setKanjitileClicked(true);
                 quizSystem.setParticletileClicked(false);
+                QuizAnswerAdapter quizAnswerAdapter = QuizAnswerAdapter.getInstance();
                 if(quizSystem.isSentenceClicked()){
                     if(quizSystem.getSentence().equals(word)) {
                         notifyChange();
-                        QuizAnswerAdapter quizAnswerAdapter = QuizAnswerAdapter.getInstance();
                         quizAnswerAdapter.notifyAChange();
                     }else{
                         quizSystem.setKanjitileClicked(false);
                         quizSystem.setSentenceClicked(false);
+                        quizAnswerAdapter.resetText();
                     }
                 }
             }
