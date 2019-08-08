@@ -9,9 +9,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
@@ -110,6 +107,7 @@ public class GrammarListAdapter extends RecyclerView.Adapter<GrammarListAdapter.
                 try {
                     jsonParser.loadJSONFromAsset(particleMemory.getJsonMap().get(particleMemory.getParticle()));
                     jsonParser.getParticleQuestion(particleMemory.getParticle());
+                    holder.toggleContents(view, holder.grammar);
                     Intent intent = new Intent((Context)activityMemory.getCurrentActivity(), QuizActivity.class);
                     ((Context) activityMemory.getCurrentActivity()).startActivity(intent);
                 } catch (JSONException e) {

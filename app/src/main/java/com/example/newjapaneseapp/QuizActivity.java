@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -45,6 +46,7 @@ public class QuizActivity extends AppCompatActivity implements MyActivity{
     private static int current_num = 0;
     private static boolean correctAnswerSelected = false;
     private ArrayList<GrammarQuizPage> questions = new ArrayList<GrammarQuizPage>();
+    private MyDb myDb;
 
     private int NUM_COL = 8;
 
@@ -52,16 +54,33 @@ public class QuizActivity extends AppCompatActivity implements MyActivity{
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        current_num = 0;
+        correctAnswerSelected = false;
+        questions = new ArrayList<GrammarQuizPage>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        activityMemory.setCurrentActivity(this);
+        myDb = new MyDb(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         initializeTextView0();
         initializeTextView1();
         loadQuestion();
         setUpQuestion();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(QuizActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void loadQuestion(){
@@ -113,7 +132,7 @@ public class QuizActivity extends AppCompatActivity implements MyActivity{
                 if (!correctAnswerSelected) {
                     Toast.makeText(getApplicationContext(),"Please Complete Your Answer", Toast.LENGTH_LONG).show();
                 } else {
-                    //myDb.updatetHasSeen(questions.get(0).getQuestion());
+                    myDb.updatetHasSeen(questions.get(0).getQuestion());
                     questions.remove(0);
                     setUpQuestion();
                     if (questions.size() == 1) {
@@ -134,7 +153,7 @@ public class QuizActivity extends AppCompatActivity implements MyActivity{
                 if (quizAnswerAdapter.getNumOfCharLeft() != 0) {
                     Toast.makeText(getApplicationContext(),"Please Complete Your Answer", Toast.LENGTH_LONG).show();
                 } else {
-                    //myDb.updatetHasSeen(questions.get(0).getQuestion());
+                    myDb.updatetHasSeen(questions.get(0).getQuestion());
                     questions.remove(0);
                     setUpQuestion();
                     if (questions.size() == 1) {
@@ -172,9 +191,9 @@ public class QuizActivity extends AppCompatActivity implements MyActivity{
                     tv.setBackground(view.getResources().getDrawable(R.drawable.border_green));
                     setTextClickable(false);
                     correctAnswerSelected = true;
-                    //myDb.updateCorrectness(questions.get(0).getQuestion(), true);
+                    myDb.updateCorrectness(questions.get(0).getQuestion(), true);
                 }else{
-                    //myDb.updateCorrectness(questions.get(0).getQuestion(), true);
+                    myDb.updateCorrectness(questions.get(0).getQuestion(), true);
                     tv.setBackground(view.getResources().getDrawable(R.drawable.border_red));
                 }
             }

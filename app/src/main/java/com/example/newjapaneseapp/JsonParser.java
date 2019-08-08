@@ -61,7 +61,7 @@ public class JsonParser {
         ArrayList<Integer> viewList = new ArrayList<>();
         viewList.add(0);
         viewList.add(1);
-        //MyDb myDb = new MyDb(context);
+        MyDb myDb = new MyDb((Context)activityMemory.getCurrentActivity());
         for(int i=0; i < questions.length(); i++){
             JSONObject obj = questions.getJSONObject(i);
             String[] answerList = randomizeList(obj.getString("correct"), array);
@@ -70,7 +70,7 @@ public class JsonParser {
             GrammarQuizPage grammarQuizPage = new GrammarQuizPage(obj.getString("q"), false,  obj.getString("correct"),
                     obj.getString("sound"), answerList, charList, viewList.get(0));
             grammarQuizPageArrayList.add(grammarQuizPage);
-            //myDb.addQuestion("", sImpleQuiz);
+            myDb.addQuestion("", grammarQuizPage);
         }
     }
 
