@@ -1,12 +1,16 @@
-package com.example.newjapaneseapp;
+package com.example.newjapaneseapp.GrammarQuiz;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.newjapaneseapp.ActivityMemory;
+import com.example.newjapaneseapp.Parser.JsonParser;
+import com.example.newjapaneseapp.MainActivity;
+import com.example.newjapaneseapp.MyActivity;
+import com.example.newjapaneseapp.Database.MyDb;
+import com.example.newjapaneseapp.ParticleMemory;
+import com.example.newjapaneseapp.R;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,11 +18,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -28,7 +30,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class QuizActivity extends AppCompatActivity implements MyActivity{
+public class QuizActivity extends AppCompatActivity implements MyActivity {
 
     private TextView question, answer1, answer2, answer3, answer4, num_question, soundText, soundButton;
     private Button next_button;

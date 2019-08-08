@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".QuizActivity"
+            android:name=".GrammarQuiz.QuizActivity"
             android:label="@string/title_activity_quiz"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity

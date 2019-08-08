@@ -1,4 +1,4 @@
-package com.example.newjapaneseapp;
+package com.example.newjapaneseapp.GrammarPage;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.newjapaneseapp.ActivityMemory;
+import com.example.newjapaneseapp.GrammarQuiz.QuizActivity;
+import com.example.newjapaneseapp.Parser.JsonParser;
+import com.example.newjapaneseapp.ParticleMemory;
+import com.example.newjapaneseapp.R;
 
 import org.json.JSONException;
 

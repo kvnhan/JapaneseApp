@@ -1,4 +1,4 @@
-package com.example.newjapaneseapp;
+package com.example.newjapaneseapp.GrammarQuiz;
 
 public class WritingQuiz {
     private String word;

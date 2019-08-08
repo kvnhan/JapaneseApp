@@ -1,20 +1,18 @@
-package com.example.newjapaneseapp;
+package com.example.newjapaneseapp.GrammarQuiz;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.newjapaneseapp.ActivityMemory;
+import com.example.newjapaneseapp.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

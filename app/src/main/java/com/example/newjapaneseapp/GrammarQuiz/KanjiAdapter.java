@@ -1,10 +1,14 @@
-package com.example.newjapaneseapp;
+package com.example.newjapaneseapp.GrammarQuiz;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.newjapaneseapp.ParticleMemory;
+import com.example.newjapaneseapp.R;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,7 +19,7 @@ public class KanjiAdapter extends RecyclerView.Adapter<KanjiAdapter.KanjiHolder>
 
     private ArrayList<String> wordTileArrayList = new ArrayList<>();
     CopyOnWriteArrayList<String> threadSafeList;
-    private  ParticleMemory currentParticleSelected =  ParticleMemory.getInstance();
+    private ParticleMemory currentParticleSelected =  ParticleMemory.getInstance();
     private long mLastClickTime = System.currentTimeMillis();
     private static final long CLICK_TIME_INTERVAL = 300;
     private Thread thread;

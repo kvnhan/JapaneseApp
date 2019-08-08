@@ -1,13 +1,13 @@
 package com.example.newjapaneseapp;
 
-import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+
+import com.example.newjapaneseapp.GrammarPage.GrammarDetails;
+import com.example.newjapaneseapp.GrammarPage.GrammarListAdapter;
+import com.example.newjapaneseapp.Parser.JsonParser;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;

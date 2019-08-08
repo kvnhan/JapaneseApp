@@ -1,13 +1,13 @@
-package com.example.newjapaneseapp;
+package com.example.newjapaneseapp.GrammarQuiz;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ThemedSpinnerAdapter;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.newjapaneseapp. ParticleMemory;
+import com.example.newjapaneseapp.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

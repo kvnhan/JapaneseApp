@@ -1,6 +1,12 @@
-package com.example.newjapaneseapp;
+package com.example.newjapaneseapp.Parser;
 
 import android.content.Context;
+
+import com.example.newjapaneseapp.ActivityMemory;
+import com.example.newjapaneseapp.GrammarQuiz.GrammarQuizPage;
+import com.example.newjapaneseapp.Database.MyDb;
+import com.example.newjapaneseapp.ParticleMemory;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,8 +14,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class JsonParser {
     private String json;

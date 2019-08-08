@@ -1,4 +1,4 @@
-package com.example.newjapaneseapp;
+package com.example.newjapaneseapp.GrammarPage;
 
 public class GrammarDetails {
 
