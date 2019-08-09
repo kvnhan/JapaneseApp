@@ -15,20 +15,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class JsonParser {
+public class ParticleJsonParser {
     private String json;
     private JSONObject jsonObject;
-    private static final JsonParser jsonParser = new JsonParser();
+    private static final ParticleJsonParser PARTICLE_JSON_PARSER = new ParticleJsonParser();
     private ArrayList<GrammarQuizPage> grammarQuizPageArrayList;
     public ParticleMemory particleMemory = ParticleMemory.getInstance();
     public ActivityMemory activityMemory = ActivityMemory.getInstance();
 
 
-    public static JsonParser getInstance(){
-        return jsonParser;
+    public static ParticleJsonParser getInstance(){
+        return PARTICLE_JSON_PARSER;
     }
 
-    private JsonParser(){}
+    private ParticleJsonParser(){}
 
     public void loadJSONFromAsset(int data) {
         try {

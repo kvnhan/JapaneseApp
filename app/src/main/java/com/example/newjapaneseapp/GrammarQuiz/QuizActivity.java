@@ -1,11 +1,12 @@
 package com.example.newjapaneseapp.GrammarQuiz;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.example.newjapaneseapp.ActivityMemory;
-import com.example.newjapaneseapp.Parser.JsonParser;
+import com.example.newjapaneseapp.Parser.ParticleJsonParser;
 import com.example.newjapaneseapp.MainActivity;
 import com.example.newjapaneseapp.MyActivity;
 import com.example.newjapaneseapp.Database.MyDb;
@@ -32,7 +33,7 @@ import java.util.Collections;
 
 public class QuizActivity extends AppCompatActivity implements MyActivity {
 
-    private TextView question, answer1, answer2, answer3, answer4, num_question, soundText, soundButton;
+    private TextView question, answer1, answer2, answer3, answer4, num_question, soundText, soundButton, cancelMessage, continueCurrent;
     private Button next_button;
     private ViewFlipper quiz_view_flipper;
 
@@ -42,7 +43,7 @@ public class QuizActivity extends AppCompatActivity implements MyActivity {
 
     private ActivityMemory activityMemory = ActivityMemory.getInstance();
     private ParticleMemory particleMemory = ParticleMemory.getInstance();
-    private JsonParser jsonParser = JsonParser.getInstance();
+    private ParticleJsonParser particleJsonParser = ParticleJsonParser.getInstance();
 
     private int NUM_QUESTION;
     private static int current_num = 0;
@@ -52,6 +53,8 @@ public class QuizActivity extends AppCompatActivity implements MyActivity {
 
     private int NUM_COL = 8;
 
+    private static final long CLICK_TIME_INTERVAL = 300;
+    private long mLastClickTime = System.currentTimeMillis();
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -62,6 +65,7 @@ public class QuizActivity extends AppCompatActivity implements MyActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         activityMemory.setCurrentActivity(this);
         myDb = new MyDb(this);
         setSupportActionBar(toolbar);
@@ -76,9 +80,45 @@ public class QuizActivity extends AppCompatActivity implements MyActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(QuizActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                final Intent intent = new Intent(QuizActivity.this, MainActivity.class);
+                final Dialog dialog = new Dialog(this);
+                dialog.setContentView(R.layout.warning_popup_layout);
+
+                cancelMessage = dialog.findViewById(R.id.cancelMessage);
+                continueCurrent = dialog.findViewById(R.id.continueCurrent);
+                TextView xIcon = dialog.findViewById(R.id.xIcon);
+                TextView continueIcon = dialog.findViewById(R.id.continueIcon);
+
+                View.OnClickListener yesListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        long now = System.currentTimeMillis();
+                        if (now - mLastClickTime < CLICK_TIME_INTERVAL) {
+                            return;
+                        }
+                        mLastClickTime = now;
+                        startActivity(intent);
+                        finish();
+                    }
+                };
+                View.OnClickListener noListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        long now = System.currentTimeMillis();
+                        if (now - mLastClickTime < CLICK_TIME_INTERVAL) {
+                            return;
+                        }
+                        mLastClickTime = now;
+                        dialog.cancel();
+                    }
+                };
+                cancelMessage.setOnClickListener(noListener);
+                xIcon.setOnClickListener(noListener);
+                continueCurrent.setOnClickListener(yesListener);
+                continueIcon.setOnClickListener(yesListener);
+
+                dialog.show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -87,8 +127,8 @@ public class QuizActivity extends AppCompatActivity implements MyActivity {
 
     public void loadQuestion(){
         try {
-            jsonParser.getParticleQuestion(particleMemory.getParticle());
-            questions = jsonParser.getTenQuestion();
+            particleJsonParser.getParticleQuestion(particleMemory.getParticle());
+            questions = particleJsonParser.getTenQuestion();
             NUM_QUESTION = questions.size();
             Collections.synchronizedList(questions);
         } catch (JSONException e) {

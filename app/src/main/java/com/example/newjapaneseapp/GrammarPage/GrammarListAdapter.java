@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newjapaneseapp.ActivityMemory;
 import com.example.newjapaneseapp.GrammarQuiz.QuizActivity;
-import com.example.newjapaneseapp.Parser.JsonParser;
+import com.example.newjapaneseapp.Parser.ParticleJsonParser;
 import com.example.newjapaneseapp.ParticleMemory;
 import com.example.newjapaneseapp.R;
 
@@ -109,10 +109,10 @@ public class GrammarListAdapter extends RecyclerView.Adapter<GrammarListAdapter.
             public void onClick(View view) {
                 ActivityMemory activityMemory = ActivityMemory.getInstance();
                 ParticleMemory particleMemory = ParticleMemory.getInstance();
-                JsonParser jsonParser = JsonParser.getInstance();
+                ParticleJsonParser particleJsonParser = ParticleJsonParser.getInstance();
                 try {
-                    jsonParser.loadJSONFromAsset(particleMemory.getJsonMap().get(particleMemory.getParticle()));
-                    jsonParser.getParticleQuestion(particleMemory.getParticle());
+                    particleJsonParser.loadJSONFromAsset(particleMemory.getJsonMap().get(particleMemory.getParticle()));
+                    particleJsonParser.getParticleQuestion(particleMemory.getParticle());
                     holder.toggleContents(view, holder.grammar);
                     Intent intent = new Intent((Context)activityMemory.getCurrentActivity(), QuizActivity.class);
                     ((Context) activityMemory.getCurrentActivity()).startActivity(intent);

@@ -15,7 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.example.newjapaneseapp.MainActivity;
 import com.example.newjapaneseapp.MyActivity;
+import com.example.newjapaneseapp.Parser.KanjiJsonParser;
 import com.example.newjapaneseapp.R;
+
+import java.util.ArrayList;
 
 public class KanjiQuizActivity extends AppCompatActivity implements MyActivity {
 
@@ -23,13 +26,15 @@ public class KanjiQuizActivity extends AppCompatActivity implements MyActivity {
     private Button next_button;
     private ViewFlipper quiz_view_flipper;
 
-    private int NUM_QUESTION;
+    private int NUM_QUESTION = 10;
     private static int current_num = 0;
     private static boolean correctAnswerSelected = false;
+    private ArrayList<Kanji> questions = new ArrayList<Kanji>();
 
     private static final long CLICK_TIME_INTERVAL = 300;
     private long mLastClickTime = System.currentTimeMillis();
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,11 @@ public class KanjiQuizActivity extends AppCompatActivity implements MyActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initializeTextView0();
+        KanjiJsonParser kanjiJsonParser = KanjiJsonParser.getInstance();
+        questions = kanjiJsonParser.getNQuestion(NUM_QUESTION);
+
+        setUpQuestion();
+        setNext_button();
     }
 
     @Override
@@ -105,16 +115,16 @@ public class KanjiQuizActivity extends AppCompatActivity implements MyActivity {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View view) {
-                /*TextView tv = (TextView) view;
+                TextView tv = (TextView) view;
                 if(tv.getText().equals(questions.get(0).getCorrectAnswer())) {
                     tv.setBackground(view.getResources().getDrawable(R.drawable.border_green));
                     setTextClickable(false);
                     correctAnswerSelected = true;
-                    myDb.updateCorrectness(questions.get(0).getQuestion(), true);
+                    //myDb.updateCorrectness(questions.get(0).getQuestion(), true);
                 }else{
-                    myDb.updateCorrectness(questions.get(0).getQuestion(), true);
+                    //myDb.updateCorrectness(questions.get(0).getQuestion(), true);
                     tv.setBackground(view.getResources().getDrawable(R.drawable.border_red));
-                }*/
+                }
             }
         };
 
@@ -141,26 +151,43 @@ public class KanjiQuizActivity extends AppCompatActivity implements MyActivity {
 
     public void setNext_button(){
         next_button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View view) {
                 if (!correctAnswerSelected) {
                     Toast.makeText(getApplicationContext(),"Please Complete Your Answer", Toast.LENGTH_LONG).show();
                 } else {
-                    /*myDb.updatetHasSeen(questions.get(0).getQuestion());
+                    //myDb.updatetHasSeen(questions.get(0).getQuestion());
                     questions.remove(0);
                     setUpQuestion();
                     if (questions.size() == 1) {
                         next_button.setText("Finish");
                         finishButton();
-                    }*/
+                    }
                 }
             }
         });
     }
 
+    public void finishButton(){
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void setUpQuestion(){
         current_num++;
         correctAnswerSelected = false;
+        quiz_view_flipper.setDisplayedChild(2);
         num_question.setText(current_num + "/" + NUM_QUESTION);
+        resetTextBorder();
+        setTextClickable(true);
+        question.setText(questions.get(0).getWord());
+        soundText.setText(questions.get(0).getHiragana());
+        answer1.setText(questions.get(0).getChoices()[0]);
+        answer2.setText(questions.get(0).getChoices()[1]);
+        answer3.setText(questions.get(0).getChoices()[2]);
+        answer4.setText(questions.get(0).getChoices()[3]);
+
     }
 }

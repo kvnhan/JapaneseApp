@@ -1,10 +1,13 @@
 package com.example.newjapaneseapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.newjapaneseapp.GrammarPage.GrammarDetails;
 import com.example.newjapaneseapp.GrammarPage.GrammarListAdapter;
-import com.example.newjapaneseapp.Parser.JsonParser;
+import com.example.newjapaneseapp.KanjiQuiz.KanjiQuizActivity;
+import com.example.newjapaneseapp.Parser.KanjiJsonParser;
+import com.example.newjapaneseapp.Parser.ParticleJsonParser;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -62,6 +65,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         activityMemory.setCurrentActivity(this);
+
+        KanjiJsonParser kanjiJsonParser = KanjiJsonParser.getInstance();
+        kanjiJsonParser.generateList();
+        kanjiJsonParser.getNQuestion(10);
 
         setUpView();
     }
@@ -152,7 +159,8 @@ public class MainActivity extends AppCompatActivity
             initializeRecyclerView();
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.kanjiNav) {
-
+            Intent i = new Intent(this, KanjiQuizActivity.class);
+            startActivity(i);
         }
 
 
@@ -211,14 +219,14 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.grammarRecycler);
-        JsonParser jsonParser = JsonParser.getInstance();
+        ParticleJsonParser particleJsonParser = ParticleJsonParser.getInstance();
         ParticleMemory particleMemory = ParticleMemory.getInstance();
         ArrayList<GrammarDetails> grammarDetailsArrayList = new ArrayList<>();
         for (Map.Entry<String,Integer> entry : particleMemory.getJsonMap().entrySet()) {
             try {
-                jsonParser.loadJSONFromAsset(entry.getValue());
-                JSONObject jsonObject = jsonParser.parseJSON(entry.getKey());
-                String des = jsonParser.getParticleDescription(jsonObject);
+                particleJsonParser.loadJSONFromAsset(entry.getValue());
+                JSONObject jsonObject = particleJsonParser.parseJSON(entry.getKey());
+                String des = particleJsonParser.getParticleDescription(jsonObject);
                 GrammarDetails gr = new GrammarDetails(entry.getKey(), des);
                 grammarDetailsArrayList.add(gr);
             }catch(JSONException e){
