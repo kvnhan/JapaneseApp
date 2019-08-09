@@ -1,10 +1,12 @@
 package com.example.newjapaneseapp;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.newjapaneseapp.GrammarPage.GrammarDetails;
 import com.example.newjapaneseapp.GrammarPage.GrammarListAdapter;
+import com.example.newjapaneseapp.KanjiPage.KanjiPageAdapter;
 import com.example.newjapaneseapp.KanjiQuiz.KanjiQuizActivity;
 import com.example.newjapaneseapp.Parser.KanjiJsonParser;
 import com.example.newjapaneseapp.Parser.ParticleJsonParser;
@@ -17,6 +19,8 @@ import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +30,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import org.json.JSONException;
@@ -48,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private Timer swipeTimer;
     private ActivityMemory activityMemory = ActivityMemory.getInstance();
     private ViewFlipper view_flipper_0;
+    private  RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,6 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
         activityMemory.setCurrentActivity(this);
 
         KanjiJsonParser kanjiJsonParser = KanjiJsonParser.getInstance();
@@ -156,11 +162,20 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.grammarNav){
             view_flipper_0.setDisplayedChild(1);
+            TextView title = findViewById(R.id.titleHeader);
+            title.setText("Particles");
             initializeRecyclerView();
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.kanjiNav) {
-            Intent i = new Intent(this, KanjiQuizActivity.class);
-            startActivity(i);
+            view_flipper_0.setDisplayedChild(1);
+            TextView title = findViewById(R.id.titleHeader);
+            title.setText("N5 Vocabulary");
+            KanjiJsonParser kanjiJsonParser = KanjiJsonParser.getInstance();
+            KanjiPageAdapter kanjiPageAdapter = new KanjiPageAdapter(kanjiJsonParser.getKanji_and_Meaning());
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setAdapter(kanjiPageAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+            drawer.closeDrawer(GravityCompat.START);
         }
 
 
@@ -218,7 +233,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeRecyclerView(){
-        RecyclerView recyclerView = findViewById(R.id.grammarRecycler);
         ParticleJsonParser particleJsonParser = ParticleJsonParser.getInstance();
         ParticleMemory particleMemory = ParticleMemory.getInstance();
         ArrayList<GrammarDetails> grammarDetailsArrayList = new ArrayList<>();

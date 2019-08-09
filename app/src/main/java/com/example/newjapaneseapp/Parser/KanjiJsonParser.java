@@ -3,6 +3,7 @@ package com.example.newjapaneseapp.Parser;
 import android.content.Context;
 import com.example.newjapaneseapp.ActivityMemory;
 import com.example.newjapaneseapp.KanjiManagement;
+import com.example.newjapaneseapp.KanjiPage.KanjiDetailsPage;
 import com.example.newjapaneseapp.KanjiQuiz.Kanji;
 
 import org.json.JSONArray;
@@ -49,6 +50,27 @@ public class KanjiJsonParser {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public ArrayList<KanjiDetailsPage> getKanji_and_Meaning(){
+        ArrayList<KanjiDetailsPage> kanjiDetailsPages = new ArrayList<>();
+        try {
+            JSONArray questions = new JSONArray(json);
+            for (int i = 0; i < questions.length(); i++) {
+                JSONObject obj = questions.getJSONObject(i);
+                String word = obj.getString("word");
+                if(word.equals("null")){
+                    word = obj.getString("hiragana");
+                }else{
+                    word += " - " + obj.getString("hiragana");
+                }
+                KanjiDetailsPage kanjiDetailsPage = new KanjiDetailsPage(word, obj.getString("english"));
+                kanjiDetailsPages.add(kanjiDetailsPage);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  kanjiDetailsPages;
     }
 
     public void getQuestions(){
@@ -105,10 +127,12 @@ public class KanjiJsonParser {
             array_index = rand.nextInt(4);
             if(answerList[array_index] == null){
                 int n = rand.nextInt(array.size());
-                if(!array.get(n).equals("null")){
-                    if(!indexList.contains(n) & !array.get(n).equals(answer)){
-                        indexList.add(n);
-                        spaceLeft--;
+                if(!indexList.contains(n) & !array.get(n).equals(answer)){
+                    indexList.add(n);
+                    spaceLeft--;
+                    if(array.get(n).getString(name).equals("null")){
+                        answerList[array_index] = array.get(n).getString("hiragana");
+                    }else {
                         answerList[array_index] = array.get(n).getString(name);
                     }
                 }

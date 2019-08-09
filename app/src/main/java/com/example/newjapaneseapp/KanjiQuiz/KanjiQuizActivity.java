@@ -189,5 +189,12 @@ public class KanjiQuizActivity extends AppCompatActivity implements MyActivity {
         answer3.setText(questions.get(0).getChoices()[2]);
         answer4.setText(questions.get(0).getChoices()[3]);
 
+        question.setTextSize(18);
+        soundText.setTextSize(18);
+        answer1.setTextSize(18);
+        answer2.setTextSize(18);
+        answer3.setTextSize(18);
+        answer4.setTextSize(18);
+
     }
 }

@@ -8,7 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/titleHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#D8D0D0"
@@ -22,7 +22,7 @@
         android:id="@+id/grammarRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/textView2" >
+        android:layout_below="@id/titleHeader" >
 
     </androidx.recyclerview.widget.RecyclerView>
 
