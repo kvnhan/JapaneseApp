@@ -14,10 +14,13 @@ import com.example.newjapaneseapp.Parser.ParticleJsonParser;
 import android.os.Handler;
 import android.view.LayoutInflater;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.widget.NestedScrollView;
@@ -32,6 +35,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.json.JSONException;
@@ -55,6 +59,8 @@ public class MainActivity extends AppCompatActivity
     private ActivityMemory activityMemory = ActivityMemory.getInstance();
     private ViewFlipper view_flipper_0;
     private  RecyclerView recyclerView;
+    private TextView title;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +76,50 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
         activityMemory.setCurrentActivity(this);
+
+        title = findViewById(R.id.titleHeader);
+        recyclerView = findViewById(R.id.grammarRecycler);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        System.out.println("The RecyclerView is not scrolling");
+                        if(recyclerView.computeVerticalScrollOffset() < 1){
+                            title.setVisibility(View.VISIBLE);
+                        }else {
+                            title.setVisibility(View.GONE);
+                        }
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        System.out.println("Scroll Settling");
+                        if(recyclerView.computeVerticalScrollOffset() < 1){
+                            title.setVisibility(View.VISIBLE);
+                        }else {
+                            title.setVisibility(View.GONE);
+                        }
+                        break;
+
+                }
+            }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    System.out.println("Scrolled Downwards");
+                    title.setVisibility(View.GONE);
+                } else if (dy < 0) {
+                    System.out.println("Scrolled Upwards");
+                } else {
+                    System.out.println("No Vertical Scrolled");
+                }
+            }
+        });
 
         KanjiJsonParser kanjiJsonParser = KanjiJsonParser.getInstance();
         kanjiJsonParser.generateList();
@@ -162,19 +211,30 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.grammarNav){
             view_flipper_0.setDisplayedChild(1);
-            TextView title = findViewById(R.id.titleHeader);
             title.setText("Particles");
+            title.setVisibility(View.VISIBLE);
+            FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+            floatingActionButton.setVisibility(View.GONE);
             initializeRecyclerView();
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.kanjiNav) {
             view_flipper_0.setDisplayedChild(1);
-            TextView title = findViewById(R.id.titleHeader);
             title.setText("N5 Vocabulary");
+            title.setVisibility(View.VISIBLE);
             KanjiJsonParser kanjiJsonParser = KanjiJsonParser.getInstance();
             KanjiPageAdapter kanjiPageAdapter = new KanjiPageAdapter(kanjiJsonParser.getKanji_and_Meaning());
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(kanjiPageAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+            FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+            floatingActionButton.setVisibility(View.VISIBLE);
+            final Intent intent = new Intent(this, KanjiQuizActivity.class);
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(intent);
+                }
+            });
             drawer.closeDrawer(GravityCompat.START);
         }
 

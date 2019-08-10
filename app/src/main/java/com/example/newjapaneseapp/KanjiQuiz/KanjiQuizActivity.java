@@ -13,6 +13,8 @@ import android.widget.ViewFlipper;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.example.newjapaneseapp.KanjiPage.KanjiDetailsPage;
 import com.example.newjapaneseapp.MainActivity;
 import com.example.newjapaneseapp.MyActivity;
 import com.example.newjapaneseapp.Parser.KanjiJsonParser;
@@ -38,6 +40,9 @@ public class KanjiQuizActivity extends AppCompatActivity implements MyActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        current_num = 0;
+        correctAnswerSelected = false;
+        questions = new ArrayList<Kanji>();
         setContentView(R.layout.activity_quiz);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

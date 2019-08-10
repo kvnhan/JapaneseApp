@@ -11,6 +11,7 @@
             android:title="@string/menu_home" />
         <item
             android:id="@+id/n5"
+            android:checked="false"
             android:icon="@drawable/jlptn5"
             android:title="N5 "
             app:showAsAction="always" />
