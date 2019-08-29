@@ -12,7 +12,7 @@ public class KanjiManagement {
     }
 
     private KanjiManagement() {
-        jsonMap.put("n5_kanji", R.raw.n5_kanji);
+        jsonMap.put("n5_kanji", R.raw.n5_vocab);
     }
 
     public String getKanji_level() {

@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     private ViewFlipper view_flipper_0;
     private  RecyclerView recyclerView;
     private TextView title;
+    private FloatingActionButton floatingActionButton;
 
 
     @Override
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         activityMemory.setCurrentActivity(this);
 
         title = findViewById(R.id.titleHeader);
+        floatingActionButton = findViewById(R.id.floatingActionButton);
         recyclerView = findViewById(R.id.grammarRecycler);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity
 
         KanjiJsonParser kanjiJsonParser = KanjiJsonParser.getInstance();
         kanjiJsonParser.generateList();
-        kanjiJsonParser.getNQuestion(10);
+        //kanjiJsonParser.getNQuestion(10);
 
         setUpView();
     }
@@ -213,8 +215,7 @@ public class MainActivity extends AppCompatActivity
             view_flipper_0.setDisplayedChild(1);
             title.setText("Particles");
             title.setVisibility(View.VISIBLE);
-            FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
-            floatingActionButton.setVisibility(View.GONE);
+            floatingActionButton.hide();
             initializeRecyclerView();
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.kanjiNav) {
@@ -226,8 +227,7 @@ public class MainActivity extends AppCompatActivity
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(kanjiPageAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-            FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
-            floatingActionButton.setVisibility(View.VISIBLE);
+            floatingActionButton.show();
             final Intent intent = new Intent(this, KanjiQuizActivity.class);
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override

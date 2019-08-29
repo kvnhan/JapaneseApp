@@ -187,12 +187,12 @@ public class KanjiQuizActivity extends AppCompatActivity implements MyActivity {
         num_question.setText(current_num + "/" + NUM_QUESTION);
         resetTextBorder();
         setTextClickable(true);
-        question.setText(questions.get(0).getWord());
-        soundText.setText(questions.get(0).getHiragana());
-        answer1.setText(questions.get(0).getChoices()[0]);
-        answer2.setText(questions.get(0).getChoices()[1]);
-        answer3.setText(questions.get(0).getChoices()[2]);
-        answer4.setText(questions.get(0).getChoices()[3]);
+        question.setText(questions.get(0).getQuestion());
+        soundText.setText("");
+        answer1.setText(questions.get(0).getChoices().get(0));
+        answer2.setText(questions.get(0).getChoices().get(1));
+        answer3.setText(questions.get(0).getChoices().get(2));
+        answer4.setText(questions.get(0).getChoices().get(3));
 
         question.setTextSize(18);
         soundText.setTextSize(18);

@@ -55,16 +55,18 @@ public class KanjiJsonParser {
     public ArrayList<KanjiDetailsPage> getKanji_and_Meaning(){
         ArrayList<KanjiDetailsPage> kanjiDetailsPages = new ArrayList<>();
         try {
-            JSONArray questions = new JSONArray(json);
-            for (int i = 0; i < questions.length(); i++) {
-                JSONObject obj = questions.getJSONObject(i);
-                String word = obj.getString("word");
-                if(word.equals("null")){
-                    word = obj.getString("hiragana");
-                }else{
-                    word += " - " + obj.getString("hiragana");
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray jsonArray = jsonObject.getJSONArray("n5_kanji");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                String word = obj.getString("kanji");
+                word += " - " + obj.getString("kana");
+                JSONArray meaningArray = obj.getJSONArray("meaning");
+                String meaning = "";
+                for (int j = 0; j < meaningArray.length(); j++){
+                    meaning += meaningArray.getString(j) + "\n";
                 }
-                KanjiDetailsPage kanjiDetailsPage = new KanjiDetailsPage(word, obj.getString("english"));
+                KanjiDetailsPage kanjiDetailsPage = new KanjiDetailsPage(word, meaning);
                 kanjiDetailsPages.add(kanjiDetailsPage);
             }
         }catch (Exception e){
@@ -76,23 +78,31 @@ public class KanjiJsonParser {
     public void getQuestions(){
         try {
             kanjiArrayList = new ArrayList<>();
-            JSONArray questions = new JSONArray(json);
-            ArrayList<JSONObject> newList = shuffleJSONArray(questions);
+            JSONObject jsonObject = new JSONObject(json);
+            //TODO: Change "n5_kanji" to a variable
+            JSONArray jsonArray = jsonObject.getJSONArray("n5_kanji");
             Random random = new Random();
-            for(int i=0; i < questions.length(); i++){
-                JSONObject obj = questions.getJSONObject(i);
+            for(int i=0; i < jsonArray.length(); i++){
+                JSONObject obj = jsonArray.getJSONObject(i);
                 Kanji kanji = null;
                 int n = random.nextInt(2);
-                String question;
-                question = obj.getString("word");
-                if(question.equals("null")){
-                    question = obj.getString("hiragana");
-                }
+                String kanjiquestion = obj.getString("kanji");
+                String kanaquestion = obj.getString("kana");
+                ArrayList<String> pos_enChoices = convertJsonArray(obj.getJSONArray("pChoices"), 0, 3);
+                ArrayList<String> pos_kanjiChoices = convertJsonArray(obj.getJSONArray("kanjiChoices"), 0, 3);
+                ArrayList<String> temp = new ArrayList<String>();
                 if(n == 0){
-                    kanji = new Kanji(question, obj.getString("hiragana"), obj.getString("english"), obj.getString("english"), randomizeList(obj.getString("english"), newList, "english"));
+                    temp = convertJsonArray(obj.getJSONArray("meaning"), 0, obj.getJSONArray("meaning").length());
+                    Collections.shuffle(temp);
+                    pos_enChoices.add(temp.get(0));
+                    Collections.shuffle(pos_enChoices);
+                    kanji = new Kanji(kanjiquestion, pos_enChoices, temp);
                 }
                 else if(n == 1){
-                    kanji = new Kanji(obj.getString("english"), "", question, question, randomizeList(question, newList, "word"));
+                    temp.add(kanjiquestion);
+                    pos_kanjiChoices.add(kanjiquestion);
+                    Collections.shuffle(pos_kanjiChoices);
+                    kanji = new Kanji(kanaquestion, pos_kanjiChoices, temp);
                 }
                 kanjiArrayList.add(kanji);
             }
@@ -116,33 +126,19 @@ public class KanjiJsonParser {
         return arrayList;
     }
 
-    public String[] randomizeList(String answer, ArrayList<JSONObject> array, String name) throws JSONException {
-        Random rand = new Random();
-        String answerList[] = new String[4];
-        int spaceLeft = 3;
-        int array_index = rand.nextInt(4);
-        ArrayList<Integer> indexList = new ArrayList<>();
-        answerList[array_index] = answer;
-        while(spaceLeft > 0){
-            array_index = rand.nextInt(4);
-            if(answerList[array_index] == null){
-                int n = rand.nextInt(array.size());
-                if(!indexList.contains(n) & !array.get(n).equals(answer)){
-                    indexList.add(n);
-                    spaceLeft--;
-                    if(array.get(n).getString(name).equals("null")){
-                        answerList[array_index] = array.get(n).getString("hiragana");
-                    }else {
-                        answerList[array_index] = array.get(n).getString(name);
-                    }
-                }
+    public ArrayList<String> convertJsonArray(JSONArray jsonArray, int fromIndex, int toIndex){
+        ArrayList<String> arrayList = new ArrayList<>();
 
+        for (int i = 0; i < jsonArray.length(); i++){
+            try {
+                arrayList.add(jsonArray.getString(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
         }
-        return answerList;
+        arrayList = new ArrayList<String>(arrayList.subList(fromIndex, toIndex));
+        return arrayList;
     }
-
     public ArrayList<Kanji> getKanjiArrayList() {
         return kanjiArrayList;
     }
